@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">GameProject1</string>
+    <string name="admob_app_id">ca-app-pub-9861475475783282~7631270715</string>
+    <string name="rewarded_ad_id">ca-app-pub-9861475475783282/1525027362</string>
+    <string name="rewarded_ad_id_for_test">ca-app-pub-3940256099942544/5224354917</string>
 </resources>
