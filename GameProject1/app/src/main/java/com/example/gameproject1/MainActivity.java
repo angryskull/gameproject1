@@ -1,5 +1,5 @@
 package com.example.gameproject1;
-
+//eunno change this
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,6 +19,46 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 public class MainActivity extends AppCompatActivity {
 
@@ -34,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 */
-
-
 public class MainActivity extends Activity {
     private RewardedAd rewardedAd;
     private Button reviveButton;
