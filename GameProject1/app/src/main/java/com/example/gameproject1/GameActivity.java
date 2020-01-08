@@ -40,7 +40,6 @@ public class GameActivity extends AppCompatActivity{
 //        directionTextView = (TextView) findViewById(R.id.directionTextView);
         //Referencing also other views
         joystick = (JoystickView) findViewById(R.id.joystickView);
-        gameView = (View) findViewById(R.id.view);
         //Event listener that always returns the variation of the angle in degrees, motion power in percentage and direction of movement
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
 
