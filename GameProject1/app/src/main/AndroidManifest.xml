@@ -23,6 +23,12 @@
         <activity android:name=".MainActivity">
 
         </activity>
+        <activity android:name=".HomeMenuActivity">
+        </activity>
+        <activity android:name=".SettingActivity">
+        </activity>
+        <service android:name=".BGMService">
+        </service>
     </application>
 
 </manifest>
