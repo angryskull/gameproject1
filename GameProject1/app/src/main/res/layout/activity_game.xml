@@ -7,8 +7,7 @@
     android:layout_height="fill_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    android:theme="@android:style/Theme.NoTitleBar"
-    tools:context=".GameActivity">
+    android:theme="@android:style/Theme.NoTitleBar">
 
     <com.zerokol.views.joystickView.JoystickView
         android:id="@+id/joystickView"
