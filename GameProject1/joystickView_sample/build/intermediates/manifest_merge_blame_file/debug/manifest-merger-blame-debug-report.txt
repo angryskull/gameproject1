@@ -6,11 +6,20 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="14"
-8-->E:\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
+<<<<<<< HEAD
+8-->C:\Users\angry\Documents\Github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="28" />
-9-->E:\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
+9-->C:\Users\angry\Documents\Github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
 10
 11    <application />
-11-->E:\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml:4:5-20
+11-->C:\Users\angry\Documents\Github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml:4:5-20
+=======
+8-->C:\github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="28" />
+9-->C:\github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml
+10
+11    <application />
+11-->C:\github\gameproject1\GameProject1\joystickView_sample\src\main\AndroidManifest.xml:4:5-20
+>>>>>>> 040a190293519be458f3214d92d0b3fa7ae72741
 12
 13</manifest>
