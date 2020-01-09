@@ -52,6 +52,11 @@ public class HomeMenuActivity extends AppCompatActivity {
         startActivity(playIntent);
     }
 
+    public void onClickAd(View view){
+        Intent adIntent = new Intent(this, MainActivity.class);
+        startActivity(adIntent);
+    }
+
     public void onClickSetting(View view){
         Intent settingIntent = new Intent(this, SettingActivity.class);
         startActivity(settingIntent);
@@ -59,5 +64,6 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     public void onClickExit(View view){
         // popup으로 나가기 확인
+        finish();
     }
 }

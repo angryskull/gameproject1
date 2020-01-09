@@ -27,8 +27,17 @@
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:id="@+id/appplay"
-            android:text="시작"
+            android:text="Play"
             android:onClick="onClickPlay"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/appad"
+            android:text="광고"
+            android:onClick="onClickAd"/>
 
         <Button
             android:layout_width="wrap_content"

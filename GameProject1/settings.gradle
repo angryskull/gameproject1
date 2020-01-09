@@ -1,2 +1,2 @@
-include ':app', ':joystickView'
+include ':app', ':joystickView', ':joystickView_sample'
 rootProject.name='GameProject1'
