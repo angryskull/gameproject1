@@ -29,7 +29,7 @@ public class Bee {
    }
 
     public void resetBee(float honey_x, float honey_y){
-        speed = 10;
+        speed = 20;
 
         int startPoint = (int) (Math.random() * 4);
 
@@ -52,10 +52,12 @@ public class Bee {
 
         //float honey_x = findViewById(R.id.UserCharacter).getX();
         //float honey_y = findViewById(R.id.UserCharacter).getY();
-        direction_x = (honey_x - coord_x > 0 ? 1 : -1);
-        direction_y = direction_x * ((honey_y - coord_y) / (honey_x - coord_x));
-
-
+        //direction_x = (honey_x - coord_x > 0 ? 1 : -1);
+        //direction_y = direction_x * ((honey_y - coord_y) / (honey_x - coord_x));
+        float dx = honey_x - coord_x;
+        float dy = honey_y - coord_y;
+        direction_x = dx * (float)(1.0 / (Math.abs(dx) + Math.abs(dy)));
+        direction_y = dy * (float)(1.0 / (Math.abs(dx) + Math.abs(dy)));
     }
 
     public void moveBee(float honey_x, float honey_y){

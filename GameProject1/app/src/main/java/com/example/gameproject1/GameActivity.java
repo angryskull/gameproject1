@@ -27,7 +27,8 @@ import java.util.Vector;
 public class GameActivity extends AppCompatActivity{
     private TextView mText;
     private int timervalue = 3;
-    private TextView mUserCharacter;
+    private int UserSpeed = 20;
+    private ImageView mUserCharacter;
     private TextView angleTextView;
     private TextView powerTextView;
     private TextView directionTextView;
@@ -45,9 +46,11 @@ public class GameActivity extends AppCompatActivity{
     private static int Vec[][] = {{1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 
     //벌 추가
-    Bee bees[] = new Bee[3];
-    ImageView bee_images[] = new ImageView[3];
+    Bee bees[] = new Bee[10];
+    ImageView bee_images[] = new ImageView[10];
 
+    //float scale = getResources().getDisplayMetrics().density;
+    float scale = 2;
     public void ReadSprite(View view){
         int[] location = new int[2];
         view.getLocationOnScreen(location);
@@ -57,7 +60,8 @@ public class GameActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mText=(TextView)findViewById(R.id.TextView1);
-        mUserCharacter=(TextView)findViewById(R.id.UserCharacter);
+        mUserCharacter=(ImageView)findViewById(R.id.UserCharacter);
+        mUserCharacter.setImageResource(R.drawable.honey_tmp);
 
 
         new CountDownTimer(4 * 1000, 1000){
@@ -94,42 +98,42 @@ public class GameActivity extends AppCompatActivity{
                     case JoystickView.FRONT:
                         //directionTextView.setText(R.string.front_lab);
                         mUserCharacter.setX(mUserCharacter.getX());
-                        mUserCharacter.setY(mUserCharacter.getY() - 10);
+                        mUserCharacter.setY(mUserCharacter.getY() - (float)(1.0 * UserSpeed));
                         break;
                     case JoystickView.FRONT_RIGHT:
                         //directionTextView.setText(R.string.front_right_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - 8);
-                        mUserCharacter.setY(mUserCharacter.getY() - 8);
+                        mUserCharacter.setX(mUserCharacter.getX() - (float)(0.8 * UserSpeed));
+                        mUserCharacter.setY(mUserCharacter.getY() - (float)(0.8 * UserSpeed));
                         break;
                     case JoystickView.RIGHT:
                         //directionTextView.setText(R.string.right_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - 10);
+                        mUserCharacter.setX(mUserCharacter.getX() - (float)(1.0 * UserSpeed));
                         mUserCharacter.setY(mUserCharacter.getY());
                         break;
                     case JoystickView.RIGHT_BOTTOM:
                         //directionTextView.setText(R.string.right_bottom_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - 8);
-                        mUserCharacter.setY(mUserCharacter.getY() + 8);
+                        mUserCharacter.setX(mUserCharacter.getX() - (float)(0.8 * UserSpeed));
+                        mUserCharacter.setY(mUserCharacter.getY() + (float)(0.8 * UserSpeed));
                         break;
                     case JoystickView.BOTTOM:
                         //directionTextView.setText(R.string.bottom_lab);
                         mUserCharacter.setX(mUserCharacter.getX());
-                        mUserCharacter.setY(mUserCharacter.getY() + 10);
+                        mUserCharacter.setY(mUserCharacter.getY() + (float)(1.0 * UserSpeed));
                         break;
                     case JoystickView.BOTTOM_LEFT:
                         //directionTextView.setText(R.string.bottom_left_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + 8);
-                        mUserCharacter.setY(mUserCharacter.getY() + 8);
+                        mUserCharacter.setX(mUserCharacter.getX() + (float)(0.8 * UserSpeed));
+                        mUserCharacter.setY(mUserCharacter.getY() + (float)(0.8 * UserSpeed));
                         break;
                     case JoystickView.LEFT:
                         //directionTextView.setText(R.string.left_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + 10);
+                        mUserCharacter.setX(mUserCharacter.getX() + (float)(1.0 * UserSpeed));
                         mUserCharacter.setY(mUserCharacter.getY());
                         break;
                     case JoystickView.LEFT_FRONT:
                         //directionTextView.setText(R.string.left_front_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + 8);
-                        mUserCharacter.setY(mUserCharacter.getY() - 8);
+                        mUserCharacter.setX(mUserCharacter.getX() + (float)(0.8 * UserSpeed));
+                        mUserCharacter.setY(mUserCharacter.getY() - (float)(0.8 * UserSpeed));
                         break;
                     default:
                         //directionTextView.setText(R.string.center_lab);
@@ -179,16 +183,15 @@ public class GameActivity extends AppCompatActivity{
         }
 
         ConstraintLayout mainLayout = findViewById(R.id.MainLinerLayout);
-        float scale = getResources().getDisplayMetrics().density;
 
         for(int i = 0; i < bee_images.length; i++){
             bee_images[i] = new ImageView(this);
             //이미지 지정
-            bee_images[i].setImageResource(R.drawable.bee_tmp);
+            bee_images[i].setImageResource(R.drawable.bee_tmp2);
 
             //크기 지정
-            int dpWidthInPx  = (int) (50 * scale);
-            int dpHeightInPx = (int) (50 * scale);
+            int dpWidthInPx  = (int) (30 * scale);
+            int dpHeightInPx = (int) (30 * scale);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
             bee_images[i].setLayoutParams(layoutParams);
 
