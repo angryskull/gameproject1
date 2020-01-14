@@ -1,15 +1,28 @@
 package com.example.gameproject1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Html;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zerokol.views.joystickView.JoystickView;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.Vector;
 
 public class GameActivity extends AppCompatActivity{
     private TextView mText;
@@ -31,6 +44,10 @@ public class GameActivity extends AppCompatActivity{
 
     private static int Vec[][] = {{1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 
+    //벌 추가
+    Bee bees[] = new Bee[3];
+    ImageView bee_images[] = new ImageView[3];
+
     public void ReadSprite(View view){
         int[] location = new int[2];
         view.getLocationOnScreen(location);
@@ -41,6 +58,7 @@ public class GameActivity extends AppCompatActivity{
         setContentView(R.layout.activity_game);
         mText=(TextView)findViewById(R.id.TextView1);
         mUserCharacter=(TextView)findViewById(R.id.UserCharacter);
+
 
         new CountDownTimer(4 * 1000, 1000){
 
@@ -55,7 +73,8 @@ public class GameActivity extends AppCompatActivity{
 
             @Override
             public void onFinish() {
-
+                //벌 생성
+                initializeBees();
             }
         }.start();  // 타이머 시작
 //        angleTextView = (TextView) findViewById(R.id.angleTextView);
@@ -117,7 +136,67 @@ public class GameActivity extends AppCompatActivity{
                 }
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
+
+
+        //벌 움직이기 위한 타이머
+        TimerTask timerTask = new TimerTask() {
+
+            @Override
+            public void run(){
+                for(int i = 0; i < bees.length; i++){
+                    bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
+                    bee_images[i].setX(bees[i].getX());
+                    bee_images[i].setY(bees[i].getY());
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 4500, 100);
+
     }
 
+    private float getResolutionWidth(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
 
+    private float getResolutionHeight(){
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.y;
+    }
+
+    private void initializeBees(){
+        //벌 생성
+        float resolution_width = getResolutionWidth();
+        float resolution_height = getResolutionHeight();
+        for(int i = 0; i < bees.length; i++){
+            bees[i] = new Bee(resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
+        }
+
+        ConstraintLayout mainLayout = findViewById(R.id.MainLinerLayout);
+        float scale = getResources().getDisplayMetrics().density;
+
+        for(int i = 0; i < bee_images.length; i++){
+            bee_images[i] = new ImageView(this);
+            //이미지 지정
+            bee_images[i].setImageResource(R.drawable.bee_tmp);
+
+            //크기 지정
+            int dpWidthInPx  = (int) (50 * scale);
+            int dpHeightInPx = (int) (50 * scale);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+            bee_images[i].setLayoutParams(layoutParams);
+
+            //좌표 지정
+            bee_images[i].setX(bees[i].getX());
+            bee_images[i].setY(bees[i].getY());
+
+            mainLayout.addView(bee_images[i]);
+        }
+    }
 }
