@@ -12,11 +12,14 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +42,14 @@ public class GameActivity extends AppCompatActivity{
     private JoystickView joystick;
     private View gameView;
 
+    private CountDownTimer countdown;
+    private TimerRunnable tr;
+    private Thread timeThread ;
+    private boolean isGamePlaying = true;
+    private boolean isPause = false;
+    private TextView timescore;
+    private ImageButton pauseButton;
+
     private Boolean GameOver = false;
     //벌 추가
     Bee bees[] = new Bee[10];
@@ -57,9 +68,12 @@ public class GameActivity extends AppCompatActivity{
         mText=(TextView)findViewById(R.id.TextView1);
         mUserCharacter=(ImageView)findViewById(R.id.UserCharacter);
         mUserCharacter.setImageResource(R.drawable.honey_tmp);
+        pauseButton = (ImageButton)findViewById(R.id.pausebutton);
+        timescore = (TextView) findViewById(R.id.timer);
+        tr = new TimerRunnable();
+        timeThread = new Thread(tr);
 
-
-        new CountDownTimer(4 * 1000, 1000){
+        countdown = new CountDownTimer(4 * 1000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) { // 총 시간과 주기
@@ -72,10 +86,14 @@ public class GameActivity extends AppCompatActivity{
 
             @Override
             public void onFinish() {
+                AppConfig.printLOG("3,2,1 count finished");
                 //벌 생성
                 initializeBees();
             }
-        }.start();  // 타이머 시작
+        };
+
+        timeThread.start();
+
 //        angleTextView = (TextView) findViewById(R.id.angleTextView);
 //        powerTextView = (TextView) findViewById(R.id.powerTextView);
 //        directionTextView = (TextView) findViewById(R.id.directionTextView);
@@ -144,6 +162,16 @@ public class GameActivity extends AppCompatActivity{
             public void run(){
                 for(int i = 0; i < bees.length; i++){
                     if(GameOver)    break;
+
+                    try {
+                        while (isPause) {
+                            Thread.sleep(100);
+                        }
+                    }
+                    catch (Exception e){
+                        AppConfig.printLOG("Bee move timer Exception");
+                    }
+
                     bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
                     bee_images[i].setX(bees[i].getX());
                     bee_images[i].setY(bees[i].getY());
@@ -152,7 +180,10 @@ public class GameActivity extends AppCompatActivity{
                         if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bee_images[i], (int)bees[i].getX(), (int)bees[i].getY())) {
                             //timer.cancel(); 타이머 캔슬 필요
                             GameOver = true;
-                            Log.e("닿았음", "은노 아야");
+                            isPause = true;
+                            isGamePlaying = false;
+                            AppConfig.printLOG("닿았음. 은노 아야");
+//                            Log.e("닿았음", "은노 아야");
                             joystick.setEnabled(false);
 
 
@@ -267,4 +298,100 @@ public class GameActivity extends AppCompatActivity{
             mainLayout.addView(bee_images[i]);
         }
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
+        pauseButton.setImageResource(R.drawable.playbutton);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        isGamePlaying = false;
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+    }
+
+
+    public void onClickPause(View view){
+        if(!isPause){
+            isPause = true;
+            pauseButton.setImageResource(R.drawable.playbutton);
+        }
+        else{
+            isPause = false;
+            pauseButton.setImageResource(R.drawable.pausebutton);
+        }
+    }
+
+    class TimerRunnable implements Runnable{
+        int minTime = 0;
+        int secTime = 0;
+        int msecTime = 0;
+        int Threadtime = 0;
+        String strTime;
+
+        @Override
+        public void run() {
+            AppConfig.printLOG("Timer Thread run");
+
+            countdown.start();
+
+            try {
+                Thread.sleep(3000);
+                while (isGamePlaying) {
+                    while (!isPause) {
+
+                        Thread.sleep(10);
+                        Threadtime = Threadtime + 1;
+
+                        msecTime = Threadtime % 100;
+                        secTime = (Threadtime / 100) % 60;
+                        minTime = (Threadtime / 6000);
+
+                        strTime = String.format("%02d:%02d:%02d", minTime, secTime, msecTime);
+
+                        Message msg = new Message();
+                        msg.what = 12;
+                        msg.obj = strTime;
+                        handler.sendMessage(msg);
+
+                    }
+
+                    while(isPause){
+                        Thread.sleep(100);
+                        if(!isGamePlaying){
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                AppConfig.printLOG("TimeRunnable Exception - " + e);
+            }
+            AppConfig.printLOG("finish game, time score - " + strTime);
+        }
+    }
+
+
+    Handler handler = new Handler(){
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                case 12:
+                    timescore.setText(msg.obj.toString());
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 }
