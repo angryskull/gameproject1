@@ -362,7 +362,7 @@ public class GameActivity extends AppCompatActivity{
                         strTime = String.format("%02d:%02d:%02d", minTime, secTime, msecTime);
 
                         Message msg = new Message();
-                        msg.what = 12;
+                        msg.what = AppConfig.MSG_TIMER_SETTEXT;
                         msg.obj = strTime;
                         handler.sendMessage(msg);
 
@@ -386,7 +386,7 @@ public class GameActivity extends AppCompatActivity{
     Handler handler = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
-                case 12:
+                case AppConfig.MSG_TIMER_SETTEXT:
                     timescore.setText(msg.obj.toString());
                     break;
                 default:
