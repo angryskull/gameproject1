@@ -33,7 +33,7 @@ import java.util.Vector;
 public class GameActivity extends AppCompatActivity{
     private TextView mText;
     private int timervalue = 3;
-    private int UserSpeed = 20;
+    private int UserSpeed = 35;
     private ImageView mUserCharacter;
     private TextView angleTextView;
     private TextView powerTextView;
@@ -50,6 +50,8 @@ public class GameActivity extends AppCompatActivity{
     private TextView timescore;
     private ImageButton pauseButton;
 
+    float resolution_width = 0;
+    float resolution_height = 0;
     private Boolean GameOver = false;
     //벌 추가
     Bee bees[] = new Bee[10];
@@ -70,6 +72,11 @@ public class GameActivity extends AppCompatActivity{
         mUserCharacter.setImageResource(R.drawable.honey_tmp);
         pauseButton = (ImageButton)findViewById(R.id.pausebutton);
         timescore = (TextView) findViewById(R.id.timer);
+
+
+        resolution_width = getResolutionWidth();
+        resolution_height = getResolutionHeight();
+
         tr = new TimerRunnable();
         timeThread = new Thread(tr);
 
@@ -157,6 +164,11 @@ public class GameActivity extends AppCompatActivity{
                     default:
                         //directionTextView.setText(R.string.center_lab);
                 }
+
+                if(mUserCharacter.getX() > resolution_width - 100) mUserCharacter.setX(resolution_width - 100);
+                if(mUserCharacter.getY() > resolution_height - 100) mUserCharacter.setY(resolution_height - 100);
+                if(mUserCharacter.getX() < 0) mUserCharacter.setX(0);
+                if(mUserCharacter.getY() < 0) mUserCharacter.setY(0);
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
 
@@ -278,8 +290,6 @@ public class GameActivity extends AppCompatActivity{
 
     private void initializeBees(){
         //벌 생성
-        float resolution_width = getResolutionWidth();
-        float resolution_height = getResolutionHeight();
         for(int i = 0; i < bees.length; i++){
             bees[i] = new Bee(resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
         }

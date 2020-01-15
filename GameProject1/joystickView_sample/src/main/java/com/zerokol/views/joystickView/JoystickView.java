@@ -29,10 +29,10 @@ public class JoystickView extends View implements Runnable {
     private double centerX = 0; // Center view x position
     private double centerY = 0; // Center view y position
     private Paint mainCircle;
-    private Paint secondaryCircle;
+    //private Paint secondaryCircle;
     private Paint button;
-    private Paint horizontalLine;
-    private Paint verticalLine;
+    //private Paint horizontalLine;
+    //private Paint verticalLine;
     private int joystickRadius;
     private int buttonRadius;
     private int lastAngle = 0;
@@ -54,12 +54,14 @@ public class JoystickView extends View implements Runnable {
 
     protected void initJoystickView() {
         mainCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mainCircle.setColor(Color.WHITE);
+        mainCircle.setColor(Color.DKGRAY);
         mainCircle.setStyle(Paint.Style.FILL_AND_STROKE);
-
+        mainCircle.setAlpha(100);
+/*
         secondaryCircle = new Paint();
         secondaryCircle.setColor(Color.GREEN);
         secondaryCircle.setStyle(Paint.Style.STROKE);
+
 
         verticalLine = new Paint();
         verticalLine.setStrokeWidth(5);
@@ -68,10 +70,11 @@ public class JoystickView extends View implements Runnable {
         horizontalLine = new Paint();
         horizontalLine.setStrokeWidth(2);
         horizontalLine.setColor(Color.BLACK);
-
+*/
         button = new Paint(Paint.ANTI_ALIAS_FLAG);
-        button.setColor(Color.RED);
+        button.setColor(Color.BLACK);
         button.setStyle(Paint.Style.FILL);
+        button.setAlpha(100);
     }
 
     @Override
@@ -85,7 +88,7 @@ public class JoystickView extends View implements Runnable {
         xPosition = (int) getWidth() / 2;
         yPosition = (int) getWidth() / 2;
         int d = Math.min(xNew, yNew);
-        buttonRadius = (int) (d / 2 * 0.25);
+        buttonRadius = (int) (d / 2 * 0.40);
         joystickRadius = (int) (d / 2 * 0.75);
 
     }
@@ -127,6 +130,7 @@ public class JoystickView extends View implements Runnable {
         // painting the main circle
         canvas.drawCircle((int) centerX, (int) centerY, joystickRadius,
                 mainCircle);
+        /*
         // painting the secondary circle
         canvas.drawCircle((int) centerX, (int) centerY, joystickRadius / 2,
                 secondaryCircle);
@@ -136,9 +140,11 @@ public class JoystickView extends View implements Runnable {
         canvas.drawLine((float) (centerX - joystickRadius), (float) centerY,
                 (float) (centerX + joystickRadius), (float) centerY,
                 horizontalLine);
+
         canvas.drawLine((float) centerX, (float) (centerY + joystickRadius),
                 (float) centerX, (float) centerY, horizontalLine);
 
+         */
         // painting the move button
         canvas.drawCircle(xPosition, yPosition, buttonRadius, button);
     }
@@ -149,9 +155,9 @@ public class JoystickView extends View implements Runnable {
         yPosition = (int) event.getY();
         double abs = Math.sqrt((xPosition - centerX) * (xPosition - centerX)
                 + (yPosition - centerY) * (yPosition - centerY));
-        if (abs > joystickRadius) {
-            xPosition = (int) ((xPosition - centerX) * joystickRadius / abs + centerX);
-            yPosition = (int) ((yPosition - centerY) * joystickRadius / abs + centerY);
+        if (abs*2 > joystickRadius) {
+            xPosition = (int) ((xPosition - centerX) * joystickRadius / (abs*2) + centerX);
+            yPosition = (int) ((yPosition - centerY) * joystickRadius / (abs*2) + centerY);
         }
         invalidate();
         if (event.getAction() == MotionEvent.ACTION_UP) {
