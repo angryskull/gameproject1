@@ -107,6 +107,12 @@ public class GameActivity extends AppCompatActivity{
                 // TODO Auto-generated method stub
                 //                angleTextView.setText(" " + String.valueOf(angle) + "°");
                 //                powerTextView.setText(" " + String.valueOf(power) + "%");
+
+                if(isPause){
+                    AppConfig.printLOG("isPause - true, honey don't move");
+                    return;
+                }
+
                 switch (direction) {
                     case JoystickView.FRONT:
                         //directionTextView.setText(R.string.front_lab);
@@ -375,10 +381,14 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
                 }
+
+                AppConfig.printLOG("finish game, time score - " + strTime);
+                Thread.sleep(2000);
+
             } catch (Exception e) {
                 AppConfig.printLOG("TimeRunnable Exception - " + e);
             }
-            AppConfig.printLOG("finish game, time score - " + strTime);
+            finish();
         }
     }
 
