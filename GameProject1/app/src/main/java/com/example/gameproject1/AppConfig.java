@@ -4,6 +4,10 @@ import android.util.Log;
 
 public class AppConfig {
 
+
+
+
+
     public static final int MSG_TIMER_SETTEXT = 1;
 
 
