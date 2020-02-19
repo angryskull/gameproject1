@@ -396,7 +396,7 @@ public class GameActivity extends AppCompatActivity{
         }
     }
 
-    class TimerRunnable implements Runnable{
+    private class TimerRunnable implements Runnable{
         int minTime = 0;
         int secTime = 0;
         int msecTime = 0;
