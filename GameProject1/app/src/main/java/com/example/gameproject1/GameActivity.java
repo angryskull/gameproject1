@@ -3,22 +3,30 @@ package com.example.gameproject1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +42,9 @@ public class GameActivity extends AppCompatActivity{
     private TextView mText;
     private int timervalue = 3;
     private float UserSpeed = 0.3f;
+    private String strTime;
+    private static String bestTime;
+    private static int bestTimeScore = 0;
     private ImageView mUserCharacter;
     private TextView angleTextView;
     private TextView powerTextView;
@@ -61,6 +72,7 @@ public class GameActivity extends AppCompatActivity{
     Bee bees[] = new Bee[10];
     ImageView bee_images[] = new ImageView[10];
 
+
     //float scale = getResources().getDisplayMetrics().density;
     float scale = 2;
     public void ReadSprite(View view){
@@ -82,6 +94,7 @@ public class GameActivity extends AppCompatActivity{
 
         resolution_width = getResolutionWidth();
         resolution_height = getResolutionHeight();
+
 
         tr = new TimerRunnable();
         timeThread = new Thread(tr);
@@ -401,7 +414,9 @@ public class GameActivity extends AppCompatActivity{
         int secTime = 0;
         int msecTime = 0;
         int Threadtime = 0;
-        String strTime;
+        int timeScore = 0;
+
+
 
         @Override
         public void run() {
@@ -422,6 +437,7 @@ public class GameActivity extends AppCompatActivity{
                         minTime = (Threadtime / 6000);
 
                         strTime = String.format("%02d:%02d:%02d", minTime, secTime, msecTime);
+                        timeScore = minTime *10000 + secTime * 100 + msecTime;
 
                         Message msg = new Message();
                         msg.what = AppConfig.MSG_TIMER_SETTEXT;
@@ -437,14 +453,24 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
                 }
-
+                if(bestTimeScore < timeScore){
+                    bestTimeScore = timeScore;
+                    bestTime = strTime;
+                }
+                showPopup();
                 AppConfig.printLOG("finish game, time score - " + strTime);
-                Thread.sleep(2000);
+                AppConfig.printLOG("finish game, best score - " + bestTime);
 
             } catch (Exception e) {
                 AppConfig.printLOG("TimeRunnable Exception - " + e);
             }
-            finish();
+            //2020-02-21 은노 수정
+            //TODO: finish()를 바꾸기
+            //      Intent를 통해서 GameActivity에서
+            //      1. HomeMenuActivity 또는
+            //      2. Game 다시 시작
+
+
         }
     }
 
@@ -460,4 +486,42 @@ public class GameActivity extends AppCompatActivity{
             }
         }
     };
+
+    public void showPopup(){
+        AppConfig.printLOG("showPopup call");
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.activity_popup_game_over, null);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        TextView text_bestScore = (TextView)findViewById(R.id.text_best_score);
+        TextView text_score = (TextView)findViewById(R.id.text_score);
+        text_bestScore.setText(bestTime);
+        text_score.setText(strTime);
+        Button btn_home = (Button)findViewById(R.id.button_home);
+        Button btn_replay = (Button)findViewById(R.id.button_replay);
+        //home menu로 돌아가기
+        btn_home.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, HomeMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        //게임 다시 재생
+        btn_replay.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                recreate();
+            }
+        });
+
+
+    }
 }
