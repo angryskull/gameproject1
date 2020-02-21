@@ -33,7 +33,7 @@ import java.util.Vector;
 public class GameActivity extends AppCompatActivity{
     private TextView mText;
     private int timervalue = 3;
-    private int UserSpeed = 35;
+    private float UserSpeed = 0.3f;
     private ImageView mUserCharacter;
     private TextView angleTextView;
     private TextView powerTextView;
@@ -49,6 +49,10 @@ public class GameActivity extends AppCompatActivity{
     private boolean isPause = false;
     private TextView timescore;
     private ImageButton pauseButton;
+
+    //for debugging
+    private TextView text_angle;
+    private TextView text_power;
 
     float resolution_width = 0;
     float resolution_height = 0;
@@ -73,6 +77,8 @@ public class GameActivity extends AppCompatActivity{
         pauseButton = (ImageButton)findViewById(R.id.pausebutton);
         timescore = (TextView) findViewById(R.id.timer);
 
+        text_angle = (TextView) findViewById(R.id.angle);
+        text_power = (TextView) findViewById(R.id.power);
 
         resolution_width = getResolutionWidth();
         resolution_height = getResolutionHeight();
@@ -120,6 +126,13 @@ public class GameActivity extends AppCompatActivity{
                     return;
                 }
 
+                String angle_t = "angle : "+ angle;
+                String power_t = "power : "+ power;
+
+                text_angle.setText(angle_t);
+                text_power.setText(power_t);
+
+                /*
                 switch (direction) {
                     case JoystickView.FRONT:
                         //directionTextView.setText(R.string.front_lab);
@@ -163,15 +176,48 @@ public class GameActivity extends AppCompatActivity{
                         break;
                     default:
                         //directionTextView.setText(R.string.center_lab);
+                }*/
+
+                float anglevalue_x = 0f;
+                float anglevalue_y = 0f;
+                float powervalue = 0f;
+
+                if(angle >= 0){
+                    if (angle <= 90){
+                        anglevalue_x = angle;
+                        anglevalue_y = 90 - angle;
+                    }else{
+                        anglevalue_x = 180 - angle;
+                        anglevalue_y = 90 - angle;
+                    }
                 }
+                else{
+                    if (angle >= -90){
+                        anglevalue_x = angle;
+                        anglevalue_y = 90 + angle;
+                    }else{
+                        anglevalue_x = -180 - angle;
+                        anglevalue_y = 90 + angle;
+                    }
+                }
+                //powervalue = power<=30?power:30;
+                powervalue = power / 2;
+
+                float dx = anglevalue_x * 1/90 * powervalue;
+                float dy = anglevalue_y * 1/90 * powervalue;
+
+                mUserCharacter.setX(mUserCharacter.getX() + (dx * UserSpeed));
+                mUserCharacter.setY(mUserCharacter.getY() - (dy * UserSpeed));
+
+
 
                 if(mUserCharacter.getX() > resolution_width - 100) mUserCharacter.setX(resolution_width - 100);
                 if(mUserCharacter.getY() > resolution_height - 100) mUserCharacter.setY(resolution_height - 100);
                 if(mUserCharacter.getX() < 0) mUserCharacter.setX(0);
                 if(mUserCharacter.getY() < 0) mUserCharacter.setY(0);
-            }
-        }, JoystickView.DEFAULT_LOOP_INTERVAL);
 
+            }
+        }, 10);
 
         //벌 움직이기 위한 타이머
         TimerTask timerTask = new TimerTask() {
@@ -183,7 +229,7 @@ public class GameActivity extends AppCompatActivity{
 
                     try {
                         while (isPause) {
-                            Thread.sleep(100);
+                            Thread.sleep(10);
                         }
                     }
                     catch (Exception e){
@@ -216,7 +262,7 @@ public class GameActivity extends AppCompatActivity{
             }
         };
         Timer timer = new Timer();
-        timer.schedule(timerTask, 4500, 100);
+        timer.schedule(timerTask, 4500, 10);
 
     }
 
@@ -350,7 +396,7 @@ public class GameActivity extends AppCompatActivity{
         }
     }
 
-    class TimerRunnable implements Runnable{
+    private class TimerRunnable implements Runnable{
         int minTime = 0;
         int secTime = 0;
         int msecTime = 0;

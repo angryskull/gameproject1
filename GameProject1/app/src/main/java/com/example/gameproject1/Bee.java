@@ -29,7 +29,7 @@ public class Bee {
    }
 
     public void resetBee(float honey_x, float honey_y){
-        speed = 40;
+        speed = 4;
 
         int startPoint = (int) (Math.random() * 4);
 
