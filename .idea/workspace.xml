@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0c2d891-3e74-49e2-96bb-219a414c8028" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/GameProject1/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/GameProject1/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GameProject1/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/GameProject1/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,6 +29,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -46,12 +46,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="C:/AndroidSDK" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/GameProject1" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="RunDashboard">
