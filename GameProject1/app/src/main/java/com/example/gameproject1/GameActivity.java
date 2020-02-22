@@ -1,6 +1,7 @@
 package com.example.gameproject1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
@@ -49,6 +50,9 @@ public class GameActivity extends AppCompatActivity{
     private TextView angleTextView;
     private TextView powerTextView;
     private TextView directionTextView;
+
+
+
     // Importing also other views
     private JoystickView joystick;
     private View gameView;
@@ -457,10 +461,12 @@ public class GameActivity extends AppCompatActivity{
                     bestTimeScore = timeScore;
                     bestTime = strTime;
                 }
-                showPopup();
+
                 AppConfig.printLOG("finish game, time score - " + strTime);
                 AppConfig.printLOG("finish game, best score - " + bestTime);
 
+
+                showPopup();
             } catch (Exception e) {
                 AppConfig.printLOG("TimeRunnable Exception - " + e);
             }
@@ -489,39 +495,10 @@ public class GameActivity extends AppCompatActivity{
 
     public void showPopup(){
         AppConfig.printLOG("showPopup call");
-        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.activity_popup_game_over, null);
-        builder.setView(view);
-        final AlertDialog dialog = builder.create();
-        dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
-
-        TextView text_bestScore = (TextView)findViewById(R.id.text_best_score);
-        TextView text_score = (TextView)findViewById(R.id.text_score);
-        text_bestScore.setText(bestTime);
-        text_score.setText(strTime);
-        Button btn_home = (Button)findViewById(R.id.button_home);
-        Button btn_replay = (Button)findViewById(R.id.button_replay);
-        //home menu로 돌아가기
-        btn_home.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GameActivity.this, HomeMenuActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        //게임 다시 재생
-        btn_replay.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                recreate();
-            }
-        });
-
-
+        Intent intent = new Intent(this, PopupGameOverActivity.class);
+        intent.putExtra("BestScore", bestTime);
+        intent.putExtra("Score", strTime);
+        startActivity(intent);
     }
+
 }
