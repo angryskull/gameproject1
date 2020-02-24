@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 public class Bee {
     private int speed;
@@ -14,6 +15,7 @@ public class Bee {
     private float height;
     private float coord_x;
     private float coord_y;
+    private int animidx = 0;
 
    public Bee(float width, float height, float honey_x, float honey_y){
        /*
@@ -67,13 +69,20 @@ public class Bee {
             resetBee(honey_x, honey_y);
         if (coord_y > height + 50 || coord_y < 0 - 50)
             resetBee(honey_x, honey_y);
-    }
+        animidx += 1;
+        if(animidx > 50) {
+            animidx = 0;
+        }
+   }
 
     public float getX(){
        return coord_x;
     }
 
     public float getY(){
-       return coord_y;
+        return coord_y;
+    }
+    public float getanimidx(){
+        return animidx;
     }
 }

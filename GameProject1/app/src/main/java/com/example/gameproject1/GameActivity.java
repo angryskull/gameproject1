@@ -1,7 +1,6 @@
 package com.example.gameproject1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
@@ -99,16 +98,16 @@ public class GameActivity extends AppCompatActivity{
         resolution_width = getResolutionWidth();
         resolution_height = getResolutionHeight();
 
-
         tr = new TimerRunnable();
         timeThread = new Thread(tr);
-
+        isPause = true;
         countdown = new CountDownTimer(4 * 1000, 1000) {
 
             @Override
             public void onTick(long millisUntilFinished) { // 총 시간과 주기
                 mText.setText(String.valueOf(timervalue--));
                 if(timervalue == -1) {
+                    isPause = false;
                     mText.setVisibility(View.INVISIBLE);
                     mUserCharacter.setVisibility(View.VISIBLE);
                 }
@@ -119,6 +118,7 @@ public class GameActivity extends AppCompatActivity{
                 AppConfig.printLOG("3,2,1 count finished");
                 //벌 생성
                 initializeBees();
+
             }
         };
 
@@ -130,6 +130,7 @@ public class GameActivity extends AppCompatActivity{
         //Referencing also other views
         joystick = (JoystickView) findViewById(R.id.joystickView);
         //Event listener that always returns the variation of the angle in degrees, motion power in percentage and direction of movement
+
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
 
             @Override
@@ -223,10 +224,10 @@ public class GameActivity extends AppCompatActivity{
                 float dx = anglevalue_x * 1/90 * powervalue;
                 float dy = anglevalue_y * 1/90 * powervalue;
 
-                mUserCharacter.setX(mUserCharacter.getX() + (dx * UserSpeed));
-                mUserCharacter.setY(mUserCharacter.getY() - (dy * UserSpeed));
-
-
+                if(isGamePlaying) {
+                    mUserCharacter.setX(mUserCharacter.getX() + (dx * UserSpeed));
+                    mUserCharacter.setY(mUserCharacter.getY() - (dy * UserSpeed));
+                }
 
                 if(mUserCharacter.getX() > resolution_width - 100) mUserCharacter.setX(resolution_width - 100);
                 if(mUserCharacter.getY() > resolution_height - 100) mUserCharacter.setY(resolution_height - 100);
@@ -256,6 +257,10 @@ public class GameActivity extends AppCompatActivity{
                     bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
                     bee_images[i].setX(bees[i].getX());
                     bee_images[i].setY(bees[i].getY());
+                    if(bees[i].getanimidx() < 25)
+                        bee_images[i].setImageResource(R.drawable.bee_tmp2_2);
+                    else
+                        bee_images[i].setImageResource(R.drawable.bee_tmp2_3);
                     if(((int)bees[i].getX() - 75 < (int)mUserCharacter.getX() && (int)mUserCharacter.getX() < (int)bees[i].getX() + 75)
                             && ((int)bees[i].getY() - 75 < (int)mUserCharacter.getY() && (int)mUserCharacter.getY() < (int)bees[i].getY() + 75)) {
                         if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bee_images[i], (int)bees[i].getX(), (int)bees[i].getY())) {
@@ -429,7 +434,7 @@ public class GameActivity extends AppCompatActivity{
             countdown.start();
 
             try {
-                Thread.sleep(3000);
+                Thread.sleep(3100);
                 while (isGamePlaying) {
                     while (!isPause) {
 
