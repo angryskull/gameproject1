@@ -500,5 +500,8 @@ public class GameActivity extends AppCompatActivity{
         intent.putExtra("Score", strTime);
         startActivity(intent);
     }
-
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 }

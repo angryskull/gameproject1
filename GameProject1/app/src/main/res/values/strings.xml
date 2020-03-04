@@ -14,9 +14,9 @@
     <string name="left_front_lab">Front-Left</string>
     <string name="center_lab">Center</string>
     <string name="rights_lab"></string>
-    <string name="admob_app_id">ca-app-pub-9861475475783282~7631270715</string>
+    <string name="admob_app_id">ca-app-pub-5359977258647069~9765376787</string>
     <string name="rewarded_ad_id">ca-app-pub-9861475475783282/1525027362</string>
     <string name="rewarded_ad_id_for_test">ca-app-pub-3940256099942544/5224354917</string>
-    <string name="banner_ad_id">ca-app-pub-9861475475783282/7101282513</string>
+    <string name="banner_ad_id">ca-app-pub-5359977258647069/8381316389</string>
     <string name="banner_ad_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
