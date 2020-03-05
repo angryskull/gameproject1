@@ -469,7 +469,7 @@ public class GameActivity extends AppCompatActivity{
 
                 AppConfig.printLOG("finish game, time score - " + strTime);
                 AppConfig.printLOG("finish game, best score - " + bestTime);
-
+                BGMService.playEffectSound();
 
                 showPopup();
             } catch (Exception e) {
