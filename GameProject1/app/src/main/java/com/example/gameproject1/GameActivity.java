@@ -257,10 +257,13 @@ public class GameActivity extends AppCompatActivity{
                     bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
                     bee_images[i].setX(bees[i].getX());
                     bee_images[i].setY(bees[i].getY());
+                    /*
                     if(bees[i].getanimidx() < 25)
                         bee_images[i].setImageResource(R.drawable.bee_tmp2_2);
                     else
                         bee_images[i].setImageResource(R.drawable.bee_tmp2_3);
+                       
+                     */
                     if(((int)bees[i].getX() - 75 < (int)mUserCharacter.getX() && (int)mUserCharacter.getX() < (int)bees[i].getX() + 75)
                             && ((int)bees[i].getY() - 75 < (int)mUserCharacter.getY() && (int)mUserCharacter.getY() < (int)bees[i].getY() + 75)) {
                         if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bee_images[i], (int)bees[i].getX(), (int)bees[i].getY())) {
