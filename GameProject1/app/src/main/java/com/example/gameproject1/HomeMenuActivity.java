@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -20,6 +23,10 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     Button settingButton;
     private AdView mAdView;
+    //private Switch bgmSwich;
+    //private Switch effectSwich;
+    private ToggleButton bgmButton;
+    private ToggleButton effectButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,7 @@ public class HomeMenuActivity extends AppCompatActivity {
     }
 
     private void InitActivity(){
-
+        setBgmSwich();
     }
 
     public void onClickPlay(View view){
@@ -94,6 +101,65 @@ public class HomeMenuActivity extends AppCompatActivity {
     public void onClickExit(View view){
         // popup으로 나가기 확인
         finish();
+    }
+
+    private void setBgmSwich(){
+        //bgmSwich = findViewById(R.id.BGMswitch);
+        bgmButton = findViewById(R.id.bgmButton);
+        bgmButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                Log.d("bgm button", bgmButton.isChecked() + "");
+                AppConfig.printLOG("SettingActivity, BGM Switch change state - " + on);
+                if(on){
+                    BGMService.setBGMStatus(true);
+                    AppConfig.setBGMState(true);
+                    bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_on));
+                }
+                else{
+                    BGMService.setBGMStatus(false);
+                    AppConfig.setBGMState(false);
+                    bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_off));
+                }
+            }
+        });
+
+        //effectSwich = findViewById(R.id.Effectswitch);
+        effectButton = findViewById(R.id.effectButton);
+
+        effectButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                AppConfig.printLOG("SettingActivity, effect Switch change state - " + on);
+                Log.d("bgm button", effectButton.isChecked() + "");
+                if(on){
+                    AppConfig.setEffectState(true);
+                    effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_on));
+                }
+                else{
+                    AppConfig.setEffectState(false);
+                    effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_off));
+                }
+            }
+        });
+
+        if(AppConfig.getBGMState()) {
+            bgmButton.setChecked(true);
+            bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_on));
+        }
+        else{
+            bgmButton.setChecked(false);
+            bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_off));
+        }
+
+        if(AppConfig.getEffectState()){
+            effectButton.setChecked(true);
+            effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_on));
+        }
+        else{
+            effectButton.setChecked(false);
+            effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_off));
+        }
     }
 /*
     public int pxToDp(int px) {

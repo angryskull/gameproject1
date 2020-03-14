@@ -8,7 +8,7 @@ import android.widget.Switch;
 
 
 public class SettingActivity extends Activity {
-
+/*
     private Switch bgmSwich;
     private Switch effectSwich;
 
@@ -26,9 +26,10 @@ public class SettingActivity extends Activity {
     }
 
     private void InitActivity(){
-        setBgmSwich();
+        //setBgmSwich();
     }
 
+    /*
     private void setBgmSwich(){
         bgmSwich = findViewById(R.id.BGMswitch);
         bgmSwich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -74,4 +75,6 @@ public class SettingActivity extends Activity {
             effectSwich.setChecked(false);
         }
     }
+
+     */
 }
