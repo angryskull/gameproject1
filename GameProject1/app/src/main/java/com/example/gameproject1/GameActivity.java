@@ -262,7 +262,7 @@ public class GameActivity extends AppCompatActivity{
                         bee_images[i].setImageResource(R.drawable.bee_tmp2_2);
                     else
                         bee_images[i].setImageResource(R.drawable.bee_tmp2_3);
-                       
+
                      */
                     if(((int)bees[i].getX() - 75 < (int)mUserCharacter.getX() && (int)mUserCharacter.getX() < (int)bees[i].getX() + 75)
                             && ((int)bees[i].getY() - 75 < (int)mUserCharacter.getY() && (int)mUserCharacter.getY() < (int)bees[i].getY() + 75)) {
