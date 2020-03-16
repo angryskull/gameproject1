@@ -5,7 +5,7 @@
     android:id="@+id/MainLinerLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background7"
+    android:background="@drawable/background12"
     android:orientation="vertical"
     android:theme="@android:style/Theme.NoTitleBar">
 
@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="3"
         android:textSize="100sp"
+        android:textColor="@color/browser_actions_text_color"
         android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,6 +81,7 @@
         android:layout_marginBottom="100dp"
         android:text="angle : "
         android:textSize="20sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.028"
@@ -94,6 +96,7 @@
         android:layout_marginBottom="100dp"
         android:text="power : "
         android:textSize="20sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.029"
