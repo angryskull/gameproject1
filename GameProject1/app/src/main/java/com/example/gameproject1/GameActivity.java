@@ -34,6 +34,9 @@ import android.widget.TextView;
 
 import com.zerokol.views.joystickView.JoystickView;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -75,6 +78,13 @@ public class GameActivity extends AppCompatActivity{
     Bee bees[] = new Bee[10];
     ImageView bee_images[] = new ImageView[10];
 
+
+    File rank_file;
+    FileWriter fw;
+    FileReader fr;
+
+    int totbestScore = 0;
+    String str_totbestScore = "";
 
     //float scale = getResources().getDisplayMetrics().density;
     float scale = 2;
@@ -465,13 +475,52 @@ public class GameActivity extends AppCompatActivity{
                         }
                     }
                 }
-                if(bestTimeScore < timeScore){
-                    bestTimeScore = timeScore;
-                    bestTime = strTime;
-                }
 
-                AppConfig.printLOG("finish game, time score - " + strTime);
-                AppConfig.printLOG("finish game, best score - " + bestTime);
+                rank_file = new File(getFilesDir(), "rank");
+                fw = null;
+                fr = null;
+                try{
+                    fr = new FileReader(rank_file);
+                    int data;
+                    str_totbestScore = "";
+                    while((data = fr.read()) != -1){
+                        AppConfig.printLOG("rank]read data : " + data);
+                        str_totbestScore += Integer.toString(data);
+                    }
+                    AppConfig.printLOG("rank]str_totbestScore : " + str_totbestScore);
+                    if (str_totbestScore.equals("")) totbestScore = 0;
+                    else totbestScore = Integer.parseInt(str_totbestScore);
+                    AppConfig.printLOG("rank]totbestScore : " + totbestScore);
+                    AppConfig.printLOG("rank]timeScore : " + timeScore);
+
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(totbestScore < timeScore){
+                    try{
+                        fw  = new FileWriter(rank_file);
+                        totbestScore = timeScore;
+                        bestTime = strTime;
+
+                        fw.write(totbestScore);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    minTime = totbestScore/10000;
+                    secTime = (totbestScore%10000)/100;
+                    msecTime = totbestScore%100;
+                    bestTime = String.format("%02d:%02d:%02d", minTime, secTime, msecTime);
+                }
+                if(fr != null){
+                    fr.close();
+                }
+                if(fw != null){
+                    fw.close();
+                }
+                AppConfig.printLOG("rank]finish game, time score - " + strTime);
+                AppConfig.printLOG("rank]finish game, best score - " + bestTime);
                 BGMService.playEffectSound();
 
                 showPopup();
