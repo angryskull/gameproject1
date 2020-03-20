@@ -71,6 +71,7 @@ public class GameActivity extends AppCompatActivity{
     float resolution_width = 0;
     float resolution_height = 0;
     private Boolean GameOver = false;
+    private Boolean GoHome = false;
     //벌 추가
     Bee bees[] = new Bee[10];
     ImageView bee_images[] = new ImageView[10];
@@ -271,8 +272,6 @@ public class GameActivity extends AppCompatActivity{
                             AppConfig.printLOG("닿았음. 은노 아야");
 //                            Log.e("닿았음", "은노 아야");
                             joystick.setEnabled(false);
-
-
                             //mediaPlayer.stop();
                             //mediaPlayer = MediaPlayer.create(getContext(), R.raw.collision);
                             //mediaPlayer.start();
@@ -285,7 +284,6 @@ public class GameActivity extends AppCompatActivity{
         };
         Timer timer = new Timer();
         timer.schedule(timerTask, 4500, 10);
-
     }
 
     public static boolean isCollisionDetected(View view1, int x1, int y1, View view2, int x2, int y2) {
