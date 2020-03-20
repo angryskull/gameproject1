@@ -19,4 +19,8 @@ public class AppConfig {
     private static boolean BGMState = false;
     public static boolean getBGMState() {  return BGMState; }
     public static void setBGMState(boolean state)  {   BGMState = state; }
+
+    private static boolean EffectState = false;
+    public static boolean getEffectState() {  return EffectState; }
+    public static void setEffectState(boolean state)  {   EffectState = state; }
 }

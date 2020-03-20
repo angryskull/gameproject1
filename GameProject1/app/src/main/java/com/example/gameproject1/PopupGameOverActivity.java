@@ -46,8 +46,6 @@ public class PopupGameOverActivity extends Activity {
         btn_home.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PopupGameOverActivity.this, HomeMenuActivity.class);
-                startActivity(intent);
                 finish();
             }
         });

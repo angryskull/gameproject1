@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 public class BGMService extends Service {
 
     private static MediaPlayer bgmPlayer= null;
+    private static MediaPlayer effectSound = null;
     private TimerRunnable tr;
     private Thread timeThread ;
 
@@ -34,6 +35,7 @@ public class BGMService extends Service {
         AppConfig.printLOG("BGMService onDestroy");
         if(bgmPlayer != null) {
             bgmPlayer = null;
+            effectSound = null;
         }
     }
 
@@ -46,6 +48,9 @@ public class BGMService extends Service {
         if(AppConfig.getBGMState()) {
             bgmPlayer.start();
         }
+
+        effectSound = MediaPlayer.create(this, R.raw.bee_die);
+        effectSound.setLooping(false);
 
         tr = new TimerRunnable();
         timeThread = new Thread(tr);
@@ -67,6 +72,14 @@ public class BGMService extends Service {
         else{
             bgmPlayer.pause();
         }
+    }
+
+    public static void playEffectSound(){
+        if(effectSound == null){
+            return;
+        }
+        AppConfig.printLOG("effect Sound - on");
+        effectSound.start();
     }
 
     private class TimerRunnable implements Runnable{
