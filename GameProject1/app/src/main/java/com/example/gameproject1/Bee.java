@@ -5,9 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.ImageView;
+//import android.widget.ImageView;
+import androidx.appcompat.widget.AppCompatImageView;
+import android.widget.LinearLayout;
 
-public class Bee {
+public class Bee extends AppCompatImageView{
     private int speed;
     private float direction_x;
     private float direction_y;
@@ -17,7 +19,8 @@ public class Bee {
     private float coord_y;
     private int animidx = 0;
 
-   public Bee(float width, float height, float honey_x, float honey_y){
+   public Bee(Context context, float width, float height, float honey_x, float honey_y){
+       super(context);
        /*
        Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
        Point size = new Point();
@@ -27,6 +30,13 @@ public class Bee {
        */
        this.width = width - 50;
        this.height = height - 50;
+
+       float scale = 3;
+       int dpWidthInPx  = (int) (30 * scale);
+       int dpHeightInPx = (int) (30 * scale);
+       LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+       setLayoutParams(layoutParams);
+
        resetBee(honey_x, honey_y);
    }
 
@@ -60,19 +70,34 @@ public class Bee {
         float dy = honey_y - coord_y;
         direction_x = dx * (float)(1.0 / (Math.abs(dx) + Math.abs(dy)));
         direction_y = dy * (float)(1.0 / (Math.abs(dx) + Math.abs(dy)));
+
+        //이미지
+
+        if(direction_x < 0)
+            setImageResource(R.drawable.bee_icon_left);
+        else
+            setImageResource(R.drawable.bee_icon);
+
     }
 
     public void moveBee(float honey_x, float honey_y){
         coord_x += speed * direction_x;
         coord_y += speed * direction_y;
-        if(coord_x > width + 50 || coord_x < 0 - 50)
+        if(coord_x > width + 50 || coord_x < 0 - 50) {
             resetBee(honey_x, honey_y);
-        if (coord_y > height + 50 || coord_y < 0 - 50)
+        }
+        if (coord_y > height + 50 || coord_y < 0 - 50) {
             resetBee(honey_x, honey_y);
+        }
         animidx += 1;
         if(animidx > 50) {
             animidx = 0;
         }
+   }
+
+   public void setPosition(){
+       setX(coord_x);
+       setY(coord_y);
    }
 
     public float getX(){
@@ -84,5 +109,9 @@ public class Bee {
     }
     public float getanimidx(){
         return animidx;
+    }
+
+    public float getDirection_x(){
+       return direction_x;
     }
 }

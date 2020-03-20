@@ -77,8 +77,6 @@ public class GameActivity extends AppCompatActivity{
     private Boolean GoHome = false;
     //벌 추가
     Bee bees[] = new Bee[10];
-    ImageView bee_images[] = new ImageView[10];
-
 
     File rank_file;
     FileWriter fw;
@@ -88,7 +86,7 @@ public class GameActivity extends AppCompatActivity{
     String str_totbestScore = "";
 
     //float scale = getResources().getDisplayMetrics().density;
-    float scale = 2;
+    //float scale = 2;
     public void ReadSprite(View view){
         int[] location = new int[2];
         view.getLocationOnScreen(location);
@@ -253,46 +251,52 @@ public class GameActivity extends AppCompatActivity{
 
             @Override
             public void run(){
-                for(int i = 0; i < bees.length; i++){
-                    if(GameOver)    break;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i = 0; i < bees.length; i++){
+                            if(GameOver)    break;
 
-                    try {
-                        while (isPause) {
-                            Thread.sleep(10);
-                        }
-                    }
-                    catch (Exception e){
-                        AppConfig.printLOG("Bee move timer Exception");
-                    }
+                            try {
+                                while (isPause) {
+                                    Thread.sleep(10);
+                                }
+                            }
+                            catch (Exception e){
+                                AppConfig.printLOG("Bee move timer Exception");
+                            }
 
-                    bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
-                    bee_images[i].setX(bees[i].getX());
-                    bee_images[i].setY(bees[i].getY());
-                    /*
-                    if(bees[i].getanimidx() < 25)
-                        bee_images[i].setImageResource(R.drawable.bee_tmp2_2);
-                    else
-                        bee_images[i].setImageResource(R.drawable.bee_tmp2_3);
+                            bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
+                            bees[i].setPosition();
+                            /*
+                            if(bees[i].getanimidx() < 25)
+                                bee_images[i].setImageResource(R.drawable.bee_tmp2_2);
+                            else
+                                bee_images[i].setImageResource(R.drawable.bee_tmp2_3);
 
-                     */
-                    if(((int)bees[i].getX() - 75 < (int)mUserCharacter.getX() && (int)mUserCharacter.getX() < (int)bees[i].getX() + 75)
-                            && ((int)bees[i].getY() - 75 < (int)mUserCharacter.getY() && (int)mUserCharacter.getY() < (int)bees[i].getY() + 75)) {
-                        if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bee_images[i], (int)bees[i].getX(), (int)bees[i].getY())) {
-                            //timer.cancel(); 타이머 캔슬 필요
-                            GameOver = true;
-                            isPause = true;
-                            isGamePlaying = false;
-                            AppConfig.printLOG("닿았음. 은노 아야");
+                             */
+                            if(((int)bees[i].getX() - 75 < (int)mUserCharacter.getX() && (int)mUserCharacter.getX() < (int)bees[i].getX() + 75)
+                                    && ((int)bees[i].getY() - 75 < (int)mUserCharacter.getY() && (int)mUserCharacter.getY() < (int)bees[i].getY() + 75)) {
+                                if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bees[i], (int)bees[i].getX(), (int)bees[i].getY())){
+                                    //if(isCollisionDetected((View)mUserCharacter, (int)mUserCharacter.getX(), (int)mUserCharacter.getY(), bee_images[i], (int)bees[i].getX(), (int)bees[i].getY())) {
+                                    //timer.cancel(); 타이머 캔슬 필요
+                                    GameOver = true;
+                                    isPause = true;
+                                    isGamePlaying = false;
+                                    AppConfig.printLOG("닿았음. 은노 아야");
 //                            Log.e("닿았음", "은노 아야");
-                            joystick.setEnabled(false);
-                            //mediaPlayer.stop();
-                            //mediaPlayer = MediaPlayer.create(getContext(), R.raw.collision);
-                            //mediaPlayer.start();
-                            //showCollisionDialog();
-                            break;
+                                    joystick.setEnabled(false);
+                                    //mediaPlayer.stop();
+                                    //mediaPlayer = MediaPlayer.create(getContext(), R.raw.collision);
+                                    //mediaPlayer.start();
+                                    //showCollisionDialog();
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
+                });
+
             }
         };
         Timer timer = new Timer();
@@ -369,29 +373,24 @@ public class GameActivity extends AppCompatActivity{
 
     private void initializeBees(){
         //벌 생성
-        for(int i = 0; i < bees.length; i++){
-            bees[i] = new Bee(resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
-        }
+
 
         ConstraintLayout mainLayout = findViewById(R.id.MainLinerLayout);
 
-        for(int i = 0; i < bee_images.length; i++){
-            bee_images[i] = new ImageView(this);
-            //이미지 지정
-            bee_images[i].setImageResource(R.drawable.bee_tmp2);
-
-            //크기 지정
-            int dpWidthInPx  = (int) (30 * scale);
-            int dpHeightInPx = (int) (30 * scale);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-            bee_images[i].setLayoutParams(layoutParams);
-
-            //좌표 지정
-            bee_images[i].setX(bees[i].getX());
-            bee_images[i].setY(bees[i].getY());
-
-            mainLayout.addView(bee_images[i]);
+        for(int i = 0; i < bees.length; i++){
+            bees[i] = new Bee(this, resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
+            /*
+            if(bees[i].getDirection_x() < 0){
+                bees[i].setImageResource(R.drawable.bee_icon_left);
+            }
+            else{
+                bees[i].setImageResource(R.drawable.bee_icon);
+            }
+             */
+            bees[i].setPosition();
+            mainLayout.addView(bees[i]);
         }
+
     }
 
     @Override
