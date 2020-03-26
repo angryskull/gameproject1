@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.ads.AdListener;
@@ -27,6 +31,9 @@ public class HomeMenuActivity extends AppCompatActivity {
     //private Switch effectSwich;
     private ToggleButton bgmButton;
     private ToggleButton effectButton;
+    private LinearLayout adButton;
+    private TextView lifeView;
+    private ImageButton playButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,11 @@ public class HomeMenuActivity extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        adButton = findViewById(R.id.lifeplusAD);
+        lifeView = findViewById(R.id.lifevalue);
+        playButton = findViewById(R.id.appplay);
+
 /*
         mAdView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -70,6 +82,19 @@ public class HomeMenuActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AppConfig.printLOG("HomeMenuActivity onResume");
+
+        if(AppConfig.getLifevalue() == 0){
+            playButton.setClickable(false);
+            adButton.setVisibility(View.VISIBLE);
+        }
+        else if(AppConfig.getLifevalue() == 5){
+            playButton.setClickable(true);
+            adButton.setVisibility(View.INVISIBLE);
+        }
+        else{
+            playButton.setClickable(true);
+        }
+        lifeView.setText(String.valueOf(AppConfig.getLifevalue()) + "/5");
     }
 
     @Override
@@ -84,11 +109,13 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     public void onClickPlay(View view){
         // popup으로 난이도 확인
+        AppConfig.setLifevalue(AppConfig.getLifevalue() - 1);
         Intent playIntent = new Intent(this, GameActivity.class);
         startActivity(playIntent);
     }
 
     public void onClickAd(View view){
+        AppConfig.setLifevalue(AppConfig.getLifevalue() + 1);
         Intent adIntent = new Intent(this, MainActivity.class);
         startActivity(adIntent);
     }
