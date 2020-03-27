@@ -78,8 +78,10 @@ public class BGMService extends Service {
         if(effectSound == null){
             return;
         }
-        AppConfig.printLOG("effect Sound - on");
-        effectSound.start();
+        if(AppConfig.getEffectState()) {
+            AppConfig.printLOG("effect Sound - on");
+            effectSound.start();
+        }
     }
 
     private class TimerRunnable implements Runnable{
