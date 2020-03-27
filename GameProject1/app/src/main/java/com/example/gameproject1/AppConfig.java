@@ -16,11 +16,13 @@ public class AppConfig {
         Log.i("GameApp", log);
     }
 
-    private static boolean BGMState = false;
+    //private static boolean BGMState = false;
+    private static boolean BGMState = true;
     public static boolean getBGMState() {  return BGMState; }
     public static void setBGMState(boolean state)  {   BGMState = state; }
 
-    private static boolean EffectState = false;
+    //private static boolean EffectState = false;
+    private static boolean EffectState = true;
     public static boolean getEffectState() {  return EffectState; }
     public static void setEffectState(boolean state)  {   EffectState = state; }
 
