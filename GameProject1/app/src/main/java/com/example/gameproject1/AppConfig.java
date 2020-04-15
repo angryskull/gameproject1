@@ -27,7 +27,7 @@ public class AppConfig {
     public static boolean getEffectState() {  return EffectState; }
     public static void setEffectState(boolean state)  {   EffectState = state; }
 
-    private static int Lifevalue = 0;
+    private static int Lifevalue = 5;
     public static int getLifevalue(){
         return Lifevalue;
     }

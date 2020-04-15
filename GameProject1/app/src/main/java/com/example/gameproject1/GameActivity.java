@@ -160,52 +160,6 @@ public class GameActivity extends AppCompatActivity{
 //                text_angle.setText(angle_t);
                 text_power.setText(power_t);
 
-                /*
-                switch (direction) {
-                    case JoystickView.FRONT:
-                        //directionTextView.setText(R.string.front_lab);
-                        mUserCharacter.setX(mUserCharacter.getX());
-                        mUserCharacter.setY(mUserCharacter.getY() - (float)(1.0 * UserSpeed));
-                        break;
-                    case JoystickView.FRONT_RIGHT:
-                        //directionTextView.setText(R.string.front_right_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - (float)(0.8 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY() - (float)(0.8 * UserSpeed));
-                        break;
-                    case JoystickView.RIGHT:
-                        //directionTextView.setText(R.string.right_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - (float)(1.0 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY());
-                        break;
-                    case JoystickView.RIGHT_BOTTOM:
-                        //directionTextView.setText(R.string.right_bottom_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() - (float)(0.8 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY() + (float)(0.8 * UserSpeed));
-                        break;
-                    case JoystickView.BOTTOM:
-                        //directionTextView.setText(R.string.bottom_lab);
-                        mUserCharacter.setX(mUserCharacter.getX());
-                        mUserCharacter.setY(mUserCharacter.getY() + (float)(1.0 * UserSpeed));
-                        break;
-                    case JoystickView.BOTTOM_LEFT:
-                        //directionTextView.setText(R.string.bottom_left_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + (float)(0.8 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY() + (float)(0.8 * UserSpeed));
-                        break;
-                    case JoystickView.LEFT:
-                        //directionTextView.setText(R.string.left_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + (float)(1.0 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY());
-                        break;
-                    case JoystickView.LEFT_FRONT:
-                        //directionTextView.setText(R.string.left_front_lab);
-                        mUserCharacter.setX(mUserCharacter.getX() + (float)(0.8 * UserSpeed));
-                        mUserCharacter.setY(mUserCharacter.getY() - (float)(0.8 * UserSpeed));
-                        break;
-                    default:
-                        //directionTextView.setText(R.string.center_lab);
-                }*/
-
                 float anglevalue_x = 0f;
                 float anglevalue_y = 0f;
                 float powervalue = 0f;
@@ -231,8 +185,10 @@ public class GameActivity extends AppCompatActivity{
                 //powervalue = power<=30?power:30;
                 powervalue = power / 2;
 
-                float dx = anglevalue_x * 1/90 * powervalue;
-                float dy = anglevalue_y * 1/90 * powervalue;
+                //float dx = anglevalue_x * (float)(1/90) * powervalue * (float)Math.pow(powervalue/50.0, 2.0);
+                //float dy = anglevalue_y * (float)(1/90) * powervalue * (float)Math.pow(powervalue/50.0, 2.0);
+                float dx = anglevalue_x * 1/90 * powervalue * (float)Math.pow(powervalue/25.0, 3.0);
+                float dy = anglevalue_y * 1/90 * powervalue * (float)Math.pow(powervalue/25.0, 3.0);
 
                 if(isGamePlaying) {
                     mUserCharacter.setX(mUserCharacter.getX() + (dx * UserSpeed));
