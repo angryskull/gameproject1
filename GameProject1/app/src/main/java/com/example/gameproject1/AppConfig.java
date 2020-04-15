@@ -9,6 +9,7 @@ public class AppConfig {
 
 
     public static final int MSG_TIMER_SETTEXT = 1;
+    public static final int MSG_BEECOUNT_SETTEXT = 2;
 
 
     public static void printLOG(String log)
@@ -32,6 +33,9 @@ public class AppConfig {
     }
     public static void setLifevalue(int value){
         Lifevalue = value;
-
     }
+
+    private static boolean gameisTopActivity = true;
+    public static boolean getGameisTopActivity() {  return gameisTopActivity; }
+    public static void setGameisTopActivity(boolean state)  {   gameisTopActivity = state; }
 }

@@ -76,7 +76,8 @@ public class GameActivity extends AppCompatActivity{
     private Boolean GameOver = false;
     private Boolean GoHome = false;
     //벌 추가
-    Bee bees[] = new Bee[10];
+    Bee bees[] = new Bee[100];
+    private int beeLevel = 5;
 
     File rank_file;
     FileWriter fw;
@@ -156,7 +157,7 @@ public class GameActivity extends AppCompatActivity{
                 String angle_t = "angle : "+ angle;
                 String power_t = "power : "+ power;
 
-                text_angle.setText(angle_t);
+//                text_angle.setText(angle_t);
                 text_power.setText(power_t);
 
                 /*
@@ -254,17 +255,18 @@ public class GameActivity extends AppCompatActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        for(int i = 0; i < bees.length; i++){
+                        for(int i = 0; i < beeLevel; i++){
                             if(GameOver)    break;
+                            if(isPause)     continue;
 
-                            try {
-                                while (isPause) {
-                                    Thread.sleep(10);
-                                }
-                            }
-                            catch (Exception e){
-                                AppConfig.printLOG("Bee move timer Exception");
-                            }
+//                            try {
+//                                while (isPause) {
+//                                    Thread.sleep(100);
+//                                }
+//                            }
+//                            catch (Exception e){
+//                                AppConfig.printLOG("Bee move timer Exception");
+//                            }
 
                             bees[i].moveBee(mUserCharacter.getX(), mUserCharacter.getY());
                             bees[i].setPosition();
@@ -371,13 +373,12 @@ public class GameActivity extends AppCompatActivity{
         return size.y;
     }
 
+    private ConstraintLayout mainLayout;
     private void initializeBees(){
         //벌 생성
+        mainLayout = findViewById(R.id.MainLinerLayout);
 
-
-        ConstraintLayout mainLayout = findViewById(R.id.MainLinerLayout);
-
-        for(int i = 0; i < bees.length; i++){
+        for(int i = 0; i < beeLevel; i++){
             bees[i] = new Bee(this, resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
             /*
             if(bees[i].getDirection_x() < 0){
@@ -390,7 +391,13 @@ public class GameActivity extends AppCompatActivity{
             bees[i].setPosition();
             mainLayout.addView(bees[i]);
         }
+    }
 
+    private void addBee(int beeCount)
+    {
+        bees[beeCount] = new Bee(this, resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
+        bees[beeCount].setPosition();
+        mainLayout.addView(bees[beeCount]);
     }
 
     @Override
@@ -418,6 +425,7 @@ public class GameActivity extends AppCompatActivity{
 
 
     public void onClickPause(View view){
+        AppConfig.printLOG("Pause - " + isPause);
         if(!isPause){
             isPause = true;
             pauseButton.setImageResource(R.drawable.playbutton);
@@ -463,6 +471,16 @@ public class GameActivity extends AppCompatActivity{
                         msg.obj = strTime;
                         handler.sendMessage(msg);
 
+                        if(beeLevel != 5 + (minTime * 12) + secTime / 5)
+                        {
+                            addBee(beeLevel);
+                            beeLevel++;
+
+                            Message msg2 = new Message();
+                            msg2.what = AppConfig.MSG_BEECOUNT_SETTEXT;
+                            msg2.obj = String.valueOf(beeLevel);
+                            handler.sendMessage(msg2);
+                        }
                     }
 
                     while(isPause){
@@ -471,6 +489,10 @@ public class GameActivity extends AppCompatActivity{
                             break;
                         }
                     }
+                }
+
+                if(!AppConfig.getGameisTopActivity()) {
+                    return;
                 }
 
                 rank_file = new File(getFilesDir(), "rank");
@@ -540,6 +562,9 @@ public class GameActivity extends AppCompatActivity{
             switch (msg.what){
                 case AppConfig.MSG_TIMER_SETTEXT:
                     timescore.setText(msg.obj.toString());
+                    break;
+                case AppConfig.MSG_BEECOUNT_SETTEXT:
+                    text_angle.setText(msg.obj.toString());
                     break;
                 default:
                     break;
