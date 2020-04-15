@@ -23,6 +23,10 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 public class HomeMenuActivity extends AppCompatActivity {
 
     Button settingButton;
@@ -34,6 +38,11 @@ public class HomeMenuActivity extends AppCompatActivity {
     private LinearLayout adButton;
     private TextView lifeView;
     private ImageButton playButton;
+
+    File bgm_file;
+    File effect_file;
+    FileReader fr;
+    FileWriter fw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +113,7 @@ public class HomeMenuActivity extends AppCompatActivity {
     }
 
     private void InitActivity(){
+        BGMFileRead();
         setBgmSwich();
     }
 
@@ -132,6 +142,7 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     private void setBgmSwich(){
         //bgmSwich = findViewById(R.id.BGMswitch);
+
         bgmButton = findViewById(R.id.bgmButton);
         bgmButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -142,12 +153,30 @@ public class HomeMenuActivity extends AppCompatActivity {
                     BGMService.setBGMStatus(true);
                     AppConfig.setBGMState(true);
                     bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_on));
+
+                    try{
+                        fw  = new FileWriter(bgm_file);
+                        fw.write(1);
+                        fw.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     BGMService.setBGMStatus(false);
                     AppConfig.setBGMState(false);
                     bgmButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.bgm_off));
+
+                    try{
+                        fw  = new FileWriter(bgm_file);
+                        fw.write(0);
+                        fw.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
+
+
             }
         });
 
@@ -162,10 +191,26 @@ public class HomeMenuActivity extends AppCompatActivity {
                 if(on){
                     AppConfig.setEffectState(true);
                     effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_on));
+
+                    try{
+                        fw  = new FileWriter(effect_file);
+                        fw.write(1);
+                        fw.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     AppConfig.setEffectState(false);
                     effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_off));
+
+                    try{
+                        fw  = new FileWriter(effect_file);
+                        fw.write(0);
+                        fw.close();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -188,6 +233,47 @@ public class HomeMenuActivity extends AppCompatActivity {
             effectButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.effect_off));
         }
     }
+
+    private void BGMFileRead()
+    {
+        bgm_file = new File(getFilesDir(), "bgm");
+        effect_file = new File(getFilesDir(), "effect");
+        fr = null;
+
+        try{
+            fr = new FileReader(bgm_file);
+            int data;
+            int state = 0;
+            while((data = fr.read()) != -1){
+                AppConfig.printLOG("bgm]read data : " + data);
+                state = data;
+            }
+            if (state == BGMService.BGM_on){
+                AppConfig.setBGMState(true);
+                BGMService.setBGMStatus(true);
+            }
+            else AppConfig.setBGMState(false);
+
+            if(fr != null) {
+                fr.close();
+            }
+
+            fr = new FileReader(effect_file);
+            while((data = fr.read()) != -1){
+                AppConfig.printLOG("effect]read data : " + data);
+                state = data;
+            }
+            if (state == BGMService.BGM_on) AppConfig.setEffectState(true);
+            else AppConfig.setEffectState(false);
+
+            if(fr != null) {
+                fr.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 /*
     public int pxToDp(int px) {
         DisplayMetrics displaymetrics = new DisplayMetrics();

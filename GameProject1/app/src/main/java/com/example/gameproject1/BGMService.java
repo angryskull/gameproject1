@@ -45,9 +45,6 @@ public class BGMService extends Service {
 
         bgmPlayer = MediaPlayer.create(this, R.raw.wavesample);
         bgmPlayer.setLooping(true);
-        if(AppConfig.getBGMState()) {
-            bgmPlayer.start();
-        }
 
         effectSound = MediaPlayer.create(this, R.raw.bee_die);
         effectSound.setLooping(false);
@@ -57,6 +54,8 @@ public class BGMService extends Service {
         timeThread.start();
     }
 
+    public static int BGM_off = 0;
+    public static int BGM_on = 1;
     public static void setBGMStatus(boolean on){
         if(bgmPlayer == null) {
             return;
@@ -96,6 +95,14 @@ public class BGMService extends Service {
                     ActivityManager am = (ActivityManager) getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
                     String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
                     AppConfig.printLOG("Top App packageName - " + packageName);
+
+                    if(packageName.equals("com.example.gameproject1")) {
+                        AppConfig.setGameisTopActivity(true);
+                    }
+                    else {
+                        AppConfig.setGameisTopActivity(false);
+                    }
+
                     if(packageName.equals("com.example.gameproject1") && AppConfig.getBGMState()){
                         setBGMStatus(true);
                     }
