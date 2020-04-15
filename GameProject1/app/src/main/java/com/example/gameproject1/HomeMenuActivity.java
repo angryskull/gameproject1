@@ -22,6 +22,10 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.io.File;
 import java.io.FileReader;
@@ -44,6 +48,10 @@ public class HomeMenuActivity extends AppCompatActivity {
     FileReader fr;
     FileWriter fw;
 
+    private RewardedAd rewardedAd;
+    boolean isLoading;
+    private String AD_UNIT_ID;  //rewarded
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +69,15 @@ public class HomeMenuActivity extends AppCompatActivity {
         adButton = findViewById(R.id.lifeplusAD);
         lifeView = findViewById(R.id.lifevalue);
         playButton = findViewById(R.id.appplay);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        AD_UNIT_ID = getString(R.string.rewarded_ad_id_for_test);
+        rewardedAd = new RewardedAd(this, AD_UNIT_ID);
 
 /*
         mAdView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -125,9 +142,27 @@ public class HomeMenuActivity extends AppCompatActivity {
     }
 
     public void onClickAd(View view){
-        AppConfig.setLifevalue(AppConfig.getLifevalue() + 1);
-        Intent adIntent = new Intent(this, MainActivity.class);
-        startActivity(adIntent);
+//        Intent adIntent = new Intent(this, MainActivity.class);
+//        startActivity(adIntent);
+
+        RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() {
+            @Override
+            public void onRewardedAdLoaded() {
+                // Ad successfully loaded.
+                AppConfig.printLOG("AD load success");
+                AppConfig.setLifevalue(AppConfig.getLifevalue() + 1);
+                showRewardedVideo();
+            }
+
+            @Override
+            public void onRewardedAdFailedToLoad(int errorCode) {
+                // Ad failed to load.
+                AppConfig.printLOG("AD load fail");
+            }
+        };
+
+        rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
+        AppConfig.printLOG("AD Show");
     }
 
     public void onClickSetting(View view){
@@ -283,4 +318,57 @@ public class HomeMenuActivity extends AppCompatActivity {
     }
 
  */
+
+    private void loadRewardedAd() {
+        if (rewardedAd == null || !rewardedAd.isLoaded()) {
+            rewardedAd = new RewardedAd(this, AD_UNIT_ID);
+            isLoading = true;
+            rewardedAd.loadAd(
+                    new AdRequest.Builder().build(),
+                    new RewardedAdLoadCallback() {
+                        @Override
+                        public void onRewardedAdLoaded() {
+                            // Ad successfully loaded.
+                            isLoading = false;
+                        }
+
+                        @Override
+                        public void onRewardedAdFailedToLoad(int errorCode) {
+                            // Ad failed to load.
+                            isLoading = false;
+                        }
+                    });
+        }
+    }
+
+    private void showRewardedVideo() {
+//        reviveButton.setVisibility(View.INVISIBLE);
+        if (rewardedAd.isLoaded()) {
+            RewardedAdCallback adCallback =
+                    new RewardedAdCallback() {
+                        @Override
+                        public void onRewardedAdOpened() {
+                            // Ad opened.
+                        }
+
+                        @Override
+                        public void onRewardedAdClosed() {
+                            // Ad closed.
+                            // Preload the next video ad.
+                            loadRewardedAd();
+                        }
+
+                        @Override
+                        public void onUserEarnedReward(RewardItem rewardItem) {
+                            // User earned reward.
+                        }
+
+                        @Override
+                        public void onRewardedAdFailedToShow(int errorCode) {
+                            // Ad failed to display
+                        }
+                    };
+            rewardedAd.show(this, adCallback);
+        }
+    }
 }
