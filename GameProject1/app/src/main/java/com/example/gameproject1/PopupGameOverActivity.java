@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //AndroidMainfest.xml에서 android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" 로 해주었기 때문에
 //PopupGameOverActivity에서 extends AppCompatActivity로 해주었을 경우 Theme.AppCompat을 사용하라는 에러가 발생한다.
@@ -41,10 +42,6 @@ public class PopupGameOverActivity extends Activity {
 
         Button btn_home = (Button)findViewById(R.id.button_home);
         Button btn_replay = (Button)findViewById(R.id.button_replay);
-
-        if(AppConfig.getLifevalue() == 0) {
-            btn_replay.setClickable(false);
-        }
         
         //home menu로 돌아가기
         btn_home.setOnClickListener(new View.OnClickListener(){
@@ -58,6 +55,14 @@ public class PopupGameOverActivity extends Activity {
         btn_replay.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                if(AppConfig.getLifevalue() == 0)
+                {
+                    AppConfig.printLOG("Life is 0");
+                    Toast.makeText(PopupGameOverActivity.this, "You don't have life. Watch the AD!", Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
+
                 AppConfig.setLifevalue(AppConfig.getLifevalue() - 1);
                 Intent intent = new Intent(PopupGameOverActivity.this, GameActivity.class);
                 startActivity(intent);
