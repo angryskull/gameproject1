@@ -130,9 +130,11 @@ public class HomeMenuActivity extends AppCompatActivity {
         super.onResume();
         AppConfig.printLOG("HomeMenuActivity onResume");
 
-        if(AppConfig.getLifevalue() == 0){
-            playButton.setClickable(false);
+        if(AppConfig.getLifevalue() < 5){
             adButton.setVisibility(View.VISIBLE);
+            if(AppConfig.getLifevalue() == 0) {
+                playButton.setClickable(false);
+            }
         }
         else if(AppConfig.getLifevalue() == 5){
             playButton.setClickable(true);

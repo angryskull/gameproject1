@@ -154,8 +154,8 @@
 
     <LinearLayout
         android:id="@+id/layout_life"
-        android:layout_width="68dp"
-        android:layout_height="98dp"
+        android:layout_width="65dp"
+        android:layout_height="80dp"
         android:gravity="left|top"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -168,8 +168,8 @@
         <ImageView
             android:id="@+id/lifeimage"
             android:src="@drawable/honey_tmp"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
@@ -194,7 +194,7 @@
         android:layout_height="80dp"
         android:gravity="left|top"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/layout_life"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.295"
