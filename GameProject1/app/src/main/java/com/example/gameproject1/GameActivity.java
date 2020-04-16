@@ -334,7 +334,7 @@ public class GameActivity extends AppCompatActivity{
         //벌 생성
         mainLayout = findViewById(R.id.MainLinerLayout);
 
-        for(int i = 0; i < beeLevel; i++){
+        for(int i = 0; i < 100; i++){
             bees[i] = new Bee(this, resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
             /*
             if(bees[i].getDirection_x() < 0){
@@ -344,6 +344,9 @@ public class GameActivity extends AppCompatActivity{
                 bees[i].setImageResource(R.drawable.bee_icon);
             }
              */
+        }
+
+        for(int i = 0; i<beeLevel; i++){
             bees[i].setPosition();
             mainLayout.addView(bees[i]);
         }
@@ -351,9 +354,12 @@ public class GameActivity extends AppCompatActivity{
 
     private void addBee(int beeCount)
     {
-        bees[beeCount] = new Bee(this, resolution_width, resolution_height, mUserCharacter.getX(), mUserCharacter.getY());
+        if(beeCount < beeLevel){
+            return;
+        }
         bees[beeCount].setPosition();
         mainLayout.addView(bees[beeCount]);
+        beeLevel++;
     }
 
     @Override
@@ -427,14 +433,11 @@ public class GameActivity extends AppCompatActivity{
                         msg.obj = strTime;
                         handler.sendMessage(msg);
 
-                        if(beeLevel != 5 + (minTime * 12) + secTime / 5)
+                        if(beeLevel != (5 + (minTime * 12) + (secTime / 5)))
                         {
-                            addBee(beeLevel);
-                            beeLevel++;
-
                             Message msg2 = new Message();
-                            msg2.what = AppConfig.MSG_BEECOUNT_SETTEXT;
-                            msg2.obj = String.valueOf(beeLevel);
+                            msg2.what = AppConfig.MSG_ADD_BEE;
+                            msg2.arg1 = beeLevel;
                             handler.sendMessage(msg2);
                         }
                     }
@@ -448,6 +451,7 @@ public class GameActivity extends AppCompatActivity{
                 }
 
                 if(!AppConfig.getGameisTopActivity()) {
+                    AppConfig.printLOG("Game is not Top Activity");
                     return;
                 }
 
@@ -515,12 +519,18 @@ public class GameActivity extends AppCompatActivity{
 
     Handler handler = new Handler(){
         public void handleMessage(Message msg){
+            if(isPause || !isGamePlaying)
+            {
+                return;
+            }
+
             switch (msg.what){
                 case AppConfig.MSG_TIMER_SETTEXT:
                     timescore.setText(msg.obj.toString());
                     break;
-                case AppConfig.MSG_BEECOUNT_SETTEXT:
-                    text_angle.setText(msg.obj.toString());
+                case AppConfig.MSG_ADD_BEE:
+                    addBee(msg.arg1);
+                    text_angle.setText(String.valueOf(beeLevel));
                     break;
                 default:
                     break;

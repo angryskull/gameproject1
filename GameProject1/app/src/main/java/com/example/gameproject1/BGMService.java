@@ -94,7 +94,7 @@ public class BGMService extends Service {
                     Thread.sleep(200);
                     ActivityManager am = (ActivityManager) getApplicationContext().getSystemService(Activity.ACTIVITY_SERVICE);
                     String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
-                    AppConfig.printLOG("Top App packageName - " + packageName);
+//                    AppConfig.printLOG("Top App packageName - " + packageName);
 
                     if(packageName.equals("com.example.gameproject1")) {
                         AppConfig.setGameisTopActivity(true);

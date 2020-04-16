@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.ads.AdListener;
@@ -45,6 +48,7 @@ public class HomeMenuActivity extends AppCompatActivity {
 
     File bgm_file;
     File effect_file;
+    File Life_file;
     FileReader fr;
     FileWriter fw;
 
@@ -70,6 +74,23 @@ public class HomeMenuActivity extends AppCompatActivity {
         lifeView = findViewById(R.id.lifevalue);
         playButton = findViewById(R.id.appplay);
 
+        Life_file = new File(getFilesDir(), "life");
+        try{
+            fr = new FileReader(Life_file);
+            int data;
+            int value = 0;
+            while((data = fr.read()) != -1){
+                AppConfig.printLOG("life]read data : " + data);
+                value = data;
+            }
+            AppConfig.setLifevalue(value);
+
+            if(fr != null) {
+                fr.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
@@ -137,6 +158,15 @@ public class HomeMenuActivity extends AppCompatActivity {
     public void onClickPlay(View view){
         // popup으로 난이도 확인
         AppConfig.setLifevalue(AppConfig.getLifevalue() - 1);
+
+        try{
+            fw  = new FileWriter(Life_file);
+            fw.write(AppConfig.getLifevalue());
+            fw.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         Intent playIntent = new Intent(this, GameActivity.class);
         startActivity(playIntent);
     }
@@ -151,6 +181,15 @@ public class HomeMenuActivity extends AppCompatActivity {
                 // Ad successfully loaded.
                 AppConfig.printLOG("AD load success");
                 AppConfig.setLifevalue(AppConfig.getLifevalue() + 1);
+
+                try{
+                    fw  = new FileWriter(Life_file);
+                    fw.write(AppConfig.getLifevalue());
+                    fw.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 showRewardedVideo();
             }
 
