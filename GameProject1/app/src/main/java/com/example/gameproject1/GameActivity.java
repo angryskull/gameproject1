@@ -450,8 +450,8 @@ public class GameActivity extends AppCompatActivity{
                     }
                 }
 
-                if(!AppConfig.getGameisTopActivity()) {
-                    AppConfig.printLOG("Game is not Top Activity");
+                if(!GameOver) {
+                    AppConfig.printLOG("none GameOver");
                     return;
                 }
 
