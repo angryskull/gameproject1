@@ -103,7 +103,7 @@ public class BGMService extends Service {
                         AppConfig.setGameisTopActivity(false);
                     }
 
-                    if(packageName.equals("com.example.gameproject1") && AppConfig.getBGMState()){
+                    if(packageName.equals("com.example.gameproject1") && AppConfig.getBGMState() && !AppConfig.getADopenState()){
                         setBGMStatus(true);
                     }
                     else if(!packageName.equals("com.example.gameproject1") && AppConfig.getBGMState()){

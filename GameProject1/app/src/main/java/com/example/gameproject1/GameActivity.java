@@ -371,7 +371,7 @@ public class GameActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         isPause = true;
-        pauseButton.setImageResource(R.drawable.playbutton);
+        pauseButton.setImageResource(R.drawable.gameplaybutton_selector);
     }
 
     @Override
@@ -390,11 +390,11 @@ public class GameActivity extends AppCompatActivity{
         AppConfig.printLOG("Pause - " + isPause);
         if(!isPause){
             isPause = true;
-            pauseButton.setImageResource(R.drawable.playbutton);
+            pauseButton.setImageResource(R.drawable.gameplaybutton_selector);
         }
         else{
             isPause = false;
-            pauseButton.setImageResource(R.drawable.pausebutton);
+            pauseButton.setImageResource(R.drawable.pausebutton_selector);
         }
     }
 

@@ -38,4 +38,8 @@ public class AppConfig {
     private static boolean gameisTopActivity = true;
     public static boolean getGameisTopActivity() {  return gameisTopActivity; }
     public static void setGameisTopActivity(boolean state)  {   gameisTopActivity = state; }
+
+    private static boolean ADopenstatus = false;
+    public static boolean getADopenState() {  return ADopenstatus; }
+    public static void setADopenState(boolean state)  {   ADopenstatus = state; }
 }

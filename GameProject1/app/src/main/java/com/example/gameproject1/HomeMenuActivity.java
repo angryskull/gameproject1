@@ -468,6 +468,10 @@ public class HomeMenuActivity extends AppCompatActivity {
                         public void onRewardedAdOpened() {
                             // Ad opened.
                             AppConfig.printLOG("AD open");
+                            AppConfig.setADopenState(true);
+                            if(AppConfig.getBGMState()) {
+                                BGMService.setBGMStatus(false);
+                            }
                         }
 
                         @Override
@@ -476,6 +480,10 @@ public class HomeMenuActivity extends AppCompatActivity {
                             // Preload the next video ad.
 //                            loadRewardedAd();
                             AppConfig.printLOG("AD close");
+                            AppConfig.setADopenState(false);
+                            if(AppConfig.getBGMState()) {
+                                BGMService.setBGMStatus(true);
+                            }
                             Intent intent2 = new Intent(HomeMenuActivity.this, HomeMenuActivity.class);
                             startActivity(intent2);
                             finish();
