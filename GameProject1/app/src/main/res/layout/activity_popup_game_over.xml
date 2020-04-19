@@ -21,7 +21,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/replay_selector"
+            android:background="@drawable/replay"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.843"
@@ -42,6 +42,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView_score"
             app:layout_constraintVertical_bias="0.796" />
 
+
         <ImageView
             android:id="@+id/imageView_score"
             android:layout_width="320dp"
@@ -49,12 +50,10 @@
             android:src="@drawable/image_bear"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.509"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.732" />
-
-
+            app:layout_constraintVertical_bias="0.674" />
 
         <TextView
             android:id="@+id/text_best_score"
@@ -87,7 +86,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/homebutton_selector"
+            android:background="@drawable/home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.194"
@@ -98,7 +97,7 @@
             android:id="@+id/text_best"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="★Best Score★"
+            android:text="BEST SCORE"
             android:textColor="@color/browser_actions_text_color"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -113,13 +112,13 @@
             android:id="@+id/text_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score"
+            android:text="YOUR SCORE"
             android:textColor="@color/browser_actions_text_color"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/text_score"
             app:layout_constraintEnd_toEndOf="@+id/imageView_score"
-            app:layout_constraintHorizontal_bias="0.258"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/text_best"
             app:layout_constraintTop_toTopOf="@+id/imageView_score"
             app:layout_constraintVertical_bias="0.0" />

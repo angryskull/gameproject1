@@ -216,7 +216,8 @@ public class HomeMenuActivity extends AppCompatActivity {
     public void onClickPlay(View view){
         // popup으로 난이도 확인
         if(AppConfig.getLifevalue() == 0){
-            showOkPopup("You don't have life.\nWatch the AD!");
+            //showOkPopup("You don't have life.\nWatch the AD!");
+            showOkPopup("꿀을 전부 소모했습니다.\n광고를 시청해 꿀을 획득하세요!");
             return;
         }
 
@@ -433,7 +434,8 @@ public class HomeMenuActivity extends AppCompatActivity {
         public void onRewardedAdFailedToLoad(int errorCode) {
             // Ad failed to load.
             AppConfig.printLOG("AD load fail");
-            showOkPopup("AD load fail.\nPlease try again.");
+            //showOkPopup("AD load fail.\nPlease try again.");
+            showOkPopup("광고 불러오기 실패\n다시 시도해주세요.");
         }
     };
 
