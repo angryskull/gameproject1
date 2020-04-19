@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:id="@+id/popup"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="230dp"
+    android:background="#FFFFFFFF"
+    app:cardBackgroundColor="@color/colorBabyYellow"
+    app:cardCornerRadius="25dp"
+    app:cardUseCompatPadding="true"
+    tools:context=".PopupActivity">
+
+    <TextView
+        android:id="@+id/text_msg"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_gravity="top"
+        android:gravity="center"
+        android:text="Message"
+        android:textColor="@color/browser_actions_text_color"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <Button
+        android:id="@+id/button_ok"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:background="@drawable/ok"
+        android:layout_gravity="bottom|center"/>
+
+</androidx.cardview.widget.CardView>

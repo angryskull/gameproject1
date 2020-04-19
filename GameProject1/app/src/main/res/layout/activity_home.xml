@@ -150,7 +150,7 @@
         app:layout_constraintStart_toStartOf="@+id/backgroundImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.912"
-        app:srcCompat="@drawable/playbtn" />
+        app:srcCompat="@drawable/playbutton_selector" />
 
     <LinearLayout
         android:id="@+id/layout_life"
@@ -207,7 +207,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:src="@drawable/video"
+            android:src="@drawable/adbutton_selector"
             android:scaleType="fitCenter"
             android:clickable="true"
             android:onClick="onClickAd"/>

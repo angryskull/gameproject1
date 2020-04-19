@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 //AndroidMainfest.xml에서 android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" 로 해주었기 때문에
 //PopupGameOverActivity에서 extends AppCompatActivity로 해주었을 경우 Theme.AppCompat을 사용하라는 에러가 발생한다.
 //따라서 extends Activity로 바꾸어주었다. 그랬더니 잘 되네
 public class PopupGameOverActivity extends Activity {
-
+    File Life_file;
+    FileWriter fw;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +63,25 @@ public class PopupGameOverActivity extends Activity {
                 if(AppConfig.getLifevalue() == 0)
                 {
                     AppConfig.printLOG("Life is 0");
-                    Toast.makeText(PopupGameOverActivity.this, "You don't have life. Watch the AD!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PopupGameOverActivity.this, PopupActivity.class);
+                    intent.putExtra("msg", "You don't have life.\nWatch the AD!");
+                    startActivity(intent);
                     finish();
                     return;
                 }
 
+                AppConfig.printLOG("play game!");
                 AppConfig.setLifevalue(AppConfig.getLifevalue() - 1);
+                Life_file = new File(getFilesDir(), "life");
+                try{
+                    fw  = new FileWriter(Life_file);
+                    fw.write(AppConfig.getLifevalue());
+                    fw.close();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
                 Intent intent = new Intent(PopupGameOverActivity.this, GameActivity.class);
                 startActivity(intent);
                 finish();

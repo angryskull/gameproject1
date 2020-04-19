@@ -456,6 +456,13 @@ public class GameActivity extends AppCompatActivity{
                 }
 
                 rank_file = new File(getFilesDir(), "rank");
+                if(!rank_file.exists()){
+                    try {
+                        rank_file.createNewFile();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 fw = null;
                 fr = null;
                 try{
@@ -540,6 +547,9 @@ public class GameActivity extends AppCompatActivity{
 
     public void showPopup(){
         AppConfig.printLOG("showPopup call");
+        Intent intent2 = new Intent(this, HomeMenuActivity.class);
+        startActivity(intent2);
+
         Intent intent = new Intent(this, PopupGameOverActivity.class);
         intent.putExtra("BestScore", bestTime);
         intent.putExtra("Score", strTime);
